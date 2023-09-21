@@ -8,8 +8,29 @@
     <script src="./index.js" defer></script>
   </head>
   <body>
+    <dialog>
+      <form>
+        <label for="book-title">
+          Title:
+          <input type="text" id="book-title" />
+        </label>
+        <label for="book-author">
+          Author:
+          <input type="text" id="book-author" />
+        </label>
+        <label for="book-pages">
+          Pages:
+          <input type="number" id="book-pages" />
+        </label>
+        <label for="book-status">
+          Have you read it?
+          <input type="checkbox" id="book-status" />
+        </label>
+        <button class="add-book">Add book to library</button>
+      </form>
+    </dialog>
     <div class="container">
-      <button class="add-book">Add</button>
+      <button class="input-book">Add</button>
       <div class="cards-container"></div>
     </div>
   </body>

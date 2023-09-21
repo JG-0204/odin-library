@@ -1,20 +1,31 @@
+// global variables
+const titleInput = document.querySelector('#book-title');
+const authorInput = document.querySelector('#book-author');
+const pagesInput = document.querySelector('#book-pages');
+const statusInput = document.querySelector('#book-status');
+
+const modal = document.querySelector('dialog');
+
 // Storage
-const library = [];
+const library = [
+  {
+    title: 'asdsad asd',
+    author: 'asdasd',
+    pages: 200,
+    isRead: true,
+    isDisplayed: false,
+  },
+];
 
 // Book object constructor
 function Book(title, author, pages, isRead) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  this.isRead = isRead == 'true' ? true : false;
+  this.isRead = isRead;
 }
 
-function inputBook() {
-  let title = prompt('book title', 'atomic');
-  let author = prompt('book author', 'john doe');
-  let pages = prompt('book pages', 0);
-  let isRead = prompt('isRead', false);
-
+function addBookToLibrary(title, author, pages, isRead) {
   let book = new Book(title, author, pages, isRead);
 
   library.push(book);
@@ -24,7 +35,16 @@ function inputBook() {
 
 const addButton = document
   .querySelector('.add-book')
-  .addEventListener('click', inputBook);
+  .addEventListener('click', (e) => {
+    e.preventDefault();
+    addBookToLibrary(
+      titleInput.value,
+      authorInput.value,
+      pagesInput.value,
+      statusInput.checked
+    );
+    modal.close();
+  });
 
 function displayBook() {
   const container = document.querySelector('.cards-container');
@@ -58,3 +78,16 @@ function createCard(title, author, pages, status, container) {
   card.append(bookTitle, bookAuthor, bookPages, bookStatus);
   container.appendChild(card);
 }
+
+const showModalButton = document.querySelector('.input-book');
+
+showModalButton.addEventListener('click', () => {
+  // reset input values before showing modal
+  titleInput.value = '';
+  authorInput.value = '';
+  pagesInput.value = 0;
+  statusInput.checked = false;
+  modal.showModal();
+});
+
+displayBook();
