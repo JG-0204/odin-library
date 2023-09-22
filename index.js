@@ -8,15 +8,7 @@ const pagesInput = document.querySelector('#book-pages');
 const statusInput = document.querySelector('#book-status');
 
 // Storage
-const library = [
-  {
-    title: 'atomic habits',
-    author: 'james clear',
-    pages: 204,
-    isRead: true,
-    isDisplayed: false,
-  },
-];
+const library = [];
 
 // Book object constructor
 function Book(title, author, pages, isRead) {
@@ -28,7 +20,6 @@ function Book(title, author, pages, isRead) {
 
 function addBookToLibrary(title, author, pages, isRead) {
   let book = new Book(title, author, pages, isRead);
-
   library.push(book);
 
   displayBook();
@@ -67,8 +58,14 @@ function createCard(title, author, pages, status) {
   bookAuthor.classList.add('author');
   const bookPages = document.createElement('p');
   bookPages.classList.add('pages');
-  const bookStatus = document.createElement('p');
-  bookStatus.classList.add('status');
+
+  // add status button for each book
+  const statusButton = document.createElement('button');
+  statusButton.classList.add('status-btn');
+
+  statusButton.addEventListener('click', () => {
+    changeBookStatus(title, statusButton);
+  });
 
   // add delete button for each book
   const removeButton = document.createElement('button');
@@ -80,9 +77,10 @@ function createCard(title, author, pages, status) {
   bookTitle.textContent = title;
   bookAuthor.textContent = author;
   bookPages.textContent = pages;
-  bookStatus.textContent = status ? 'Read' : 'Unread';
 
-  card.append(bookTitle, bookAuthor, bookPages, bookStatus, removeButton);
+  statusButton.textContent = status ? 'Read' : 'Unread';
+
+  card.append(bookTitle, bookAuthor, bookPages, statusButton, removeButton);
   container.appendChild(card);
 }
 
@@ -107,4 +105,13 @@ function removeBookFromLibrary(card, title) {
     }
   });
   container.removeChild(card);
+}
+
+function changeBookStatus(title, btn) {
+  library.forEach((book) => {
+    if (book.title === title) {
+      book.isRead ? (book.isRead = 'Unread') : (book.isRead = 'Read');
+      btn.textContent = book.isRead;
+    }
+  });
 }
