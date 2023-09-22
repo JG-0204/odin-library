@@ -1,17 +1,18 @@
 // global variables
+const container = document.querySelector('.cards-container');
+
+const modal = document.querySelector('dialog');
 const titleInput = document.querySelector('#book-title');
 const authorInput = document.querySelector('#book-author');
 const pagesInput = document.querySelector('#book-pages');
 const statusInput = document.querySelector('#book-status');
 
-const modal = document.querySelector('dialog');
-
 // Storage
 const library = [
   {
-    title: 'asdsad asd',
-    author: 'asdasd',
-    pages: 200,
+    title: 'atomic habits',
+    author: 'james clear',
+    pages: 204,
     isRead: true,
     isDisplayed: false,
   },
@@ -47,17 +48,16 @@ const addButton = document
   });
 
 function displayBook() {
-  const container = document.querySelector('.cards-container');
   library.forEach((book) => {
     if (!book.isDisplayed) {
       book.isDisplayed = true;
-      console.log(book);
-      createCard(book.title, book.author, book.pages, book.isRead, container);
+      // console.log(book);
+      createCard(book.title, book.author, book.pages, book.isRead);
     }
   });
 }
 
-function createCard(title, author, pages, status, container) {
+function createCard(title, author, pages, status) {
   const card = document.createElement('div');
   card.classList.add('card');
 
@@ -70,12 +70,19 @@ function createCard(title, author, pages, status, container) {
   const bookStatus = document.createElement('p');
   bookStatus.classList.add('status');
 
+  // add delete button for each book
+  const removeButton = document.createElement('button');
+  removeButton.textContent = 'X';
+  removeButton.addEventListener('click', () => {
+    removeBookFromLibrary(card, title);
+  });
+
   bookTitle.textContent = title;
   bookAuthor.textContent = author;
   bookPages.textContent = pages;
   bookStatus.textContent = status ? 'Read' : 'Unread';
 
-  card.append(bookTitle, bookAuthor, bookPages, bookStatus);
+  card.append(bookTitle, bookAuthor, bookPages, bookStatus, removeButton);
   container.appendChild(card);
 }
 
@@ -87,7 +94,17 @@ showModalButton.addEventListener('click', () => {
   authorInput.value = '';
   pagesInput.value = 0;
   statusInput.checked = false;
+
   modal.showModal();
 });
 
 displayBook();
+
+function removeBookFromLibrary(card, title) {
+  library.forEach((book, index) => {
+    if (book.title === title) {
+      library.splice(index, 1);
+    }
+  });
+  container.removeChild(card);
+}
