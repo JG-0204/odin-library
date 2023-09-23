@@ -9,24 +9,36 @@
   </head>
   <body>
     <dialog>
-      <form>
+      <form method="dialog">
         <label for="book-title">
           Title:
-          <input type="text" id="book-title" />
+          <input
+            type="text"
+            id="book-title"
+            name="book-title"
+            placeholder="Atomic Habits"
+            required
+          />
         </label>
         <label for="book-author">
           Author:
-          <input type="text" id="book-author" />
+          <input
+            type="text"
+            id="book-author"
+            name="book-author"
+            placeholder="James Clear"
+            required
+          />
         </label>
         <label for="book-pages">
           Pages:
-          <input type="number" id="book-pages" />
+          <input type="number" id="book-pages" name="book-pages" required />
         </label>
         <label for="book-status">
           Have you read it?
-          <input type="checkbox" id="book-status" />
+          <input type="checkbox" id="book-status" name="book-status" />
         </label>
-        <button class="add-book">Add book to library</button>
+        <button class="add-book" type="submit">Add book to library</button>
       </form>
     </dialog>
     <div class="container">

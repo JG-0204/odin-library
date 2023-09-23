@@ -33,3 +33,15 @@ body {
 .status {
   text-transform: capitalize;
 }
+
+input {
+  outline: none;
+}
+
+input:invalid {
+  border-color: red;
+}
+
+input:valid {
+  border-color: green;
+}
