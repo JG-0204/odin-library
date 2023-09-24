@@ -1,22 +1,39 @@
 @import url('normalize.css');
 
+/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=PT+Sans&display=swap');
+
 * {
   box-sizing: border-box;
 }
 
 body {
   min-height: 100dvh;
+  color: #444655;
+  background-color: #f7f8ff;
 }
 
 header {
   padding-inline: 2rem;
 }
 
+button {
+  background-color: #0f1730;
+  /* color: #dee0e3; */
+  color: #f7f8ff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .logo {
   font-size: clamp(2rem, 10vw, 3rem);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
 }
 
 .container {
+  margin-top: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,7 +42,6 @@ header {
 
 .cards-container {
   align-self: stretch;
-
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: auto;
@@ -45,17 +61,56 @@ header {
   text-transform: capitalize;
 }
 
-.input-book {
-  font-size: clamp(1rem, 5vw, 1.5rem);
-  padding: 0.5em 1em;
+dialog {
+  font-family: 'PT Sans', sans-serif;
+  height: min-content;
+  width: min(95%, 550px);
   border: none;
-  width: min(50%, 300px);
-  cursor: pointer;
-  border: 2px solid black;
+  border-radius: 1rem;
+  padding: 2rem 2rem;
 }
 
-input {
+dialog form {
+  display: flex;
+  flex-direction: column;
+}
+
+form h2 {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  text-align: center;
+}
+
+form label {
+  font-size: clamp(0.9rem, 3vw, 1.3rem);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+form input {
+  width: 100%;
   outline: none;
+  margin-bottom: 10px;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  padding: 0.7em 0.5em;
+}
+
+.form-checkbox {
+  margin-block: 1rem;
+  text-align: center;
+}
+
+.form-checkbox input {
+  width: 25px;
+  height: 30px;
+  margin-left: 10px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.form-checkbox label {
+  text-align: center;
+  text-transform: none;
+  font-size: clamp(1rem, 4vw, 1.3rem);
 }
 
 input:invalid {
@@ -64,4 +119,19 @@ input:invalid {
 
 input:valid {
   border-color: green;
+}
+
+.input-book {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  padding: 0.5em 1em;
+  width: min(50%, 300px);
+}
+
+.add-book {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  padding: 0.5em 1em;
+  align-self: center;
+  width: min(75%, 350px);
 }

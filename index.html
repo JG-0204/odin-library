@@ -12,36 +12,39 @@
       <h1 class="logo">文学 Library</h1>
     </header>
     <dialog>
-      <form method="dialog">
-        <label for="book-title">
-          Title:
-          <input
-            type="text"
-            id="book-title"
-            name="book-title"
-            placeholder="Atomic Habits"
-            required
-          />
-        </label>
-        <label for="book-author">
-          Author:
-          <input
-            type="text"
-            id="book-author"
-            name="book-author"
-            placeholder="James Clear"
-            required
-          />
-        </label>
-        <label for="book-pages">
-          Pages:
-          <input type="number" id="book-pages" name="book-pages" required />
-        </label>
-        <label for="book-status">
-          Have you read it?
+      <form method="dialog" autocomplete="off">
+        <h2>Add New Book</h2>
+        <label for="book-title"> Title: * </label>
+        <input
+          type="text"
+          id="book-title"
+          name="book-title"
+          placeholder="Atomic Habits"
+          required
+        />
+        <label for="book-author"> Author: * </label>
+        <input
+          type="text"
+          id="book-author"
+          name="book-author"
+          placeholder="James Clear"
+          required
+        />
+        <label for="book-pages"> Pages: * </label>
+        <input
+          type="text"
+          pattern="^[0-9]*$"
+          id="book-pages"
+          name="book-pages"
+          required
+          placeholder="320"
+        />
+        <div class="form-checkbox">
+          <label for="book-status"> Have you read it? </label>
           <input type="checkbox" id="book-status" name="book-status" />
-        </label>
-        <button class="add-book" type="submit">Add book to library</button>
+        </div>
+
+        <button class="add-book" type="submit">Add</button>
       </form>
     </dialog>
     <div class="container">
