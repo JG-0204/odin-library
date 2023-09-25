@@ -98,9 +98,11 @@ function createRemoveButton(book, card, className) {
 function createStatusButton(book, className) {
   const statusButton = document.createElement('button');
   statusButton.classList.add(className);
-  statusButton.textContent = book.status ? 'Read' : 'Unread';
+  statusButton.textContent = book.isRead ? 'Read' : 'Unread';
+  setButtonBackgroundColor(book, statusButton);
   statusButton.addEventListener('click', () => {
     changeBookStatus(book, statusButton);
+    setButtonBackgroundColor(book, statusButton);
   });
   return statusButton;
 }
@@ -118,4 +120,8 @@ function changeBookStatus(book, btn) {
       btn.textContent = arrBook.isRead ? 'Read' : 'Unread';
     }
   });
+}
+
+function setButtonBackgroundColor(book, btn) {
+  btn.style.backgroundColor = book.isRead ? '#7fd1ae' : '#f48966';
 }
