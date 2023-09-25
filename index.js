@@ -68,10 +68,10 @@ function createCard(book) {
   const bookPages = createParagraph(book.pages, 'pages');
 
   // add status button for each book
-  const statusButton = createStatusButton(book);
+  const statusButton = createStatusButton(book, 'status-button');
 
   // add delete button for each book
-  const removeButton = createRemoveButton(book, card);
+  const removeButton = createRemoveButton(book, card, 'remove-button');
 
   card.append(bookTitle, bookAuthor, bookPages, statusButton, removeButton);
   bookContainer.appendChild(card);
@@ -85,21 +85,23 @@ function createParagraph(text, className) {
   return paragraph;
 }
 
-function createRemoveButton(book, card) {
+function createRemoveButton(book, card, className) {
   const removeButton = document.createElement('button');
-  removeButton.textContent = 'X';
+  removeButton.classList.add(className);
+  removeButton.textContent = 'Remove Book';
   removeButton.addEventListener('click', () =>
     removeBookFromLibrary(card, book),
   );
   return removeButton;
 }
 
-function createStatusButton(book) {
+function createStatusButton(book, className) {
   const statusButton = document.createElement('button');
+  statusButton.classList.add(className);
   statusButton.textContent = book.status ? 'Read' : 'Unread';
-  statusButton.addEventListener('click', () =>
-    changeBookStatus(book, statusButton),
-  );
+  statusButton.addEventListener('click', () => {
+    changeBookStatus(book, statusButton);
+  });
   return statusButton;
 }
 
