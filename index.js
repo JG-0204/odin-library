@@ -2,6 +2,7 @@
 const bookContainer = document.querySelector('.cards-container');
 
 const addBookModal = document.querySelector('dialog');
+const form = document.querySelector('form');
 const titleInput = document.querySelector('#book-title');
 const authorInput = document.querySelector('#book-author');
 const pagesInput = document.querySelector('#book-pages');
@@ -25,8 +26,6 @@ showModalButton.addEventListener('click', () => {
 
 const addBookButton = document.querySelector('.add-book');
 addBookButton.addEventListener('click', (e) => {
-  const form = document.querySelector('form');
-
   const title = titleInput.value;
   const author = authorInput.value;
   const pages = pagesInput.value;
@@ -125,3 +124,10 @@ function changeBookStatus(book, btn) {
 function setButtonBackgroundColor(book, btn) {
   btn.style.backgroundColor = book.isRead ? '#7fd1ae' : '#f48966';
 }
+
+// modal quit button
+const exitModalButton = document.querySelector('.exit-modal');
+exitModalButton.addEventListener('click', () => {
+  addBookModal.close();
+  form.reset();
+});
