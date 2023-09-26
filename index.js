@@ -14,25 +14,36 @@ class Library {
 
   addBook(book) {
     this.books.push(book);
+    saveToLocal();
   }
 
   removeBook(book) {
     const bookIndex = this.books.indexOf(book);
     this.books.splice(bookIndex, 1);
+    saveToLocal();
   }
 
   displayBook(book) {
-    createCard(book);
+    this.books.forEach((book) => {
+      if (!book.isDisplay) {
+        createCard(book);
+
+        book.isDisplay = true;
+      }
+    });
   }
 
   changeBookStatus(book) {
     book.status = book.status ? false : true;
+    saveToLocal();
   }
 }
 
 // global variables
 
 const library = new Library();
+
+// local storages
 
 const bookContainer = document.querySelector('.cards-container');
 
@@ -135,3 +146,22 @@ function createStatusButton(book, className) {
 function setButtonBackgroundColor(book, btn) {
   btn.style.backgroundColor = book.status ? '#7fd1ae' : '#f48966';
 }
+
+function saveToLocal() {
+  localStorage.setItem('books', JSON.stringify(library.books));
+}
+
+function loadLocal() {
+  const books = JSON.parse(localStorage.getItem('books'));
+
+  window.onload = () => {
+    books.forEach((book) => {
+      book.isDisplay = false;
+
+      library.addBook(book);
+      library.displayBook(book);
+    });
+  };
+}
+
+loadLocal();
