@@ -1,9 +1,3 @@
-// global variables
-const bookContainer = document.querySelector('.cards-container');
-
-const addBookModal = document.querySelector('dialog');
-const form = document.querySelector('form');
-
 class Book {
   constructor(title, author, pages, status) {
     this.title = title;
@@ -36,12 +30,31 @@ class Library {
   }
 }
 
+// global variables
+
 const library = new Library();
 
+const bookContainer = document.querySelector('.cards-container');
+
+const addBookModal = document.querySelector('dialog');
+const form = document.querySelector('form');
+
+// modals
+
 const showModalButton = document.querySelector('.input-book');
-showModalButton.addEventListener('click', () => {
-  addBookModal.showModal();
-});
+showModalButton.addEventListener('click', showModal);
+
+const exitModalButton = document.querySelector('.exit-modal');
+exitModalButton.addEventListener('click', closeModal);
+
+function showModal() {
+  addBookModal.show();
+}
+
+function closeModal() {
+  addBookModal.close();
+  form.reset();
+}
 
 const addBookButton = document.querySelector('.add-book');
 addBookButton.addEventListener('click', (e) => {
@@ -55,13 +68,10 @@ addBookButton.addEventListener('click', (e) => {
     e.preventDefault();
 
     const book = new Book(title, author, pages, status);
+
     library.addBook(book);
-    addBookModal.close();
-
+    closeModal();
     library.displayBook(book);
-
-    // reset form values
-    form.reset();
   }
 });
 
@@ -118,10 +128,3 @@ function createStatusButton(book, className) {
 function setButtonBackgroundColor(book, btn) {
   btn.style.backgroundColor = book.status ? '#7fd1ae' : '#f48966';
 }
-
-// modal quit button
-const exitModalButton = document.querySelector('.exit-modal');
-exitModalButton.addEventListener('click', () => {
-  addBookModal.close();
-  form.reset();
-});
