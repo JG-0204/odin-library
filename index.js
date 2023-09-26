@@ -39,6 +39,13 @@ const bookContainer = document.querySelector('.cards-container');
 const addBookModal = document.querySelector('dialog');
 const form = document.querySelector('form');
 
+// inputs
+
+const titleInput = document.querySelector('#book-title');
+const authorInput = document.querySelector('#book-author');
+const pagesInput = document.querySelector('#book-pages');
+const statusCheckBox = document.querySelector('#book-status');
+
 // modals
 
 const showModalButton = document.querySelector('.input-book');
@@ -58,10 +65,10 @@ function closeModal() {
 
 const addBookButton = document.querySelector('.add-book');
 addBookButton.addEventListener('click', (e) => {
-  const title = document.querySelector('#book-title').value;
-  const author = document.querySelector('#book-author').value;
-  const pages = document.querySelector('#book-pages').value;
-  const status = document.querySelector('#book-status').checked;
+  const title = titleInput.value;
+  const author = authorInput.value;
+  const pages = pagesInput.value;
+  const status = statusCheckBox.checked;
 
   // check if form is valid
   if (form.checkValidity()) {
