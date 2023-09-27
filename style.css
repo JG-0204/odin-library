@@ -124,7 +124,7 @@ button {
 
 dialog {
   font-family: 'PT Sans', sans-serif;
-  height: min-content;
+  height: max-content;
   width: min(95%, 550px);
   border: none;
   border-radius: 1rem;
@@ -210,4 +210,20 @@ input:valid {
   padding: 0.5em 1em;
   align-self: center;
   width: min(75%, 350px);
+}
+
+.error-msg {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f48966;
+  position: absolute;
+  top: 0;
+}
+
+.error-msg button {
+  position: absolute;
+  right: 1%;
+  background-color: transparent;
 }
