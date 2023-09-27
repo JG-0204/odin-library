@@ -43,8 +43,6 @@ class Library {
 
 const library = new Library();
 
-// local storages
-
 const bookContainer = document.querySelector('.cards-container');
 
 const addBookModal = document.querySelector('dialog');
@@ -148,20 +146,52 @@ function setButtonBackgroundColor(book, btn) {
 }
 
 function saveToLocal() {
-  localStorage.setItem('books', JSON.stringify(library.books));
+  if (localStorage === null) {
+    showErrorMessage('This browser does not support local storage');
+    return;
+  }
+
+  try {
+    localStorage.setItem('books', JSON.stringify(library.books));
+  } catch (err) {
+    showErrorMessage('Error saving to local storage.');
+  }
 }
 
 function loadLocal() {
-  const books = JSON.parse(localStorage.getItem('books'));
+  try {
+    const books = JSON.parse(localStorage.getItem('books'));
 
-  window.onload = () => {
-    books.forEach((book) => {
-      book.isDisplay = false;
+    if (books) {
+      window.onload = () => {
+        books.forEach((book) => {
+          book.isDisplay = false;
 
-      library.addBook(book);
-      library.displayBook(book);
-    });
-  };
+          library.addBook(book);
+          library.displayBook(book);
+        });
+      };
+    }
+  } catch (err) {
+    showErrorMessage('Error loading from local storage.');
+  }
+}
+
+function showErrorMessage(error) {
+  const errorContainer = document.createElement('div');
+  errorContainer.classList.add('error-msg');
+
+  const errorPara = document.createElement('p');
+  errorPara.textContent = error;
+  const errorCloseButton = document.createElement('button');
+  errorCloseButton.textContent = 'X';
+
+  errorCloseButton.addEventListener('click', () => {
+    document.body.removeChild(errorContainer);
+  });
+
+  errorContainer.append(errorPara, errorCloseButton);
+  document.body.appendChild(errorContainer);
 }
 
 loadLocal();
