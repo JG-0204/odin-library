@@ -10,9 +10,9 @@
   </head>
   <body>
     <header>
-      <h1 class="logo">文学 Library</h1>
+      <h1 class="logo">Library</h1>
     </header>
-    <dialog>
+    <dialog closeOnEscape="false">
       <form method="dialog" autocomplete="off">
         <h2>Add New Book</h2>
         <label for="book-title"> Title*</label>
@@ -52,6 +52,11 @@
     <div class="container">
       <button class="input-book">New Book</button>
       <div class="cards-container"></div>
+    </div>
+    <div class="book-logs">
+      <p class="books-read"></p>
+      <p class="books-unread"></p>
+      <p class="books-total"></p>
     </div>
   </body>
 </html>

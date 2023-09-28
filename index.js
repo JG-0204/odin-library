@@ -1,62 +1,108 @@
+class Book {
+  constructor(title, author, pages, status) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.status = status;
+  }
+}
+
+class Library {
+  constructor() {
+    this.books = [];
+  }
+
+  addBook(book) {
+    this.books.push(book);
+
+    displayBookLogs();
+    saveToLocal();
+  }
+
+  removeBook(book) {
+    const bookIndex = this.books.indexOf(book);
+    this.books.splice(bookIndex, 1);
+
+    displayBookLogs();
+    saveToLocal();
+  }
+
+  displayBook(book) {
+    this.books.forEach((book) => {
+      if (!book.isDisplay) {
+        createCard(book);
+
+        book.isDisplay = true;
+      }
+    });
+  }
+
+  changeBookStatus(book) {
+    book.status = book.status ? false : true;
+
+    displayBookLogs();
+    saveToLocal();
+  }
+
+  getLogs() {
+    const logs = {
+      booksRead: this.books.filter((book) => book.status).length,
+      booksUnread: this.books.filter((book) => !book.status).length,
+      totalBooks: this.books.length,
+    };
+    return logs;
+  }
+}
+
 // global variables
+
+const library = new Library();
+
 const bookContainer = document.querySelector('.cards-container');
 
 const addBookModal = document.querySelector('dialog');
 const form = document.querySelector('form');
+
 const titleInput = document.querySelector('#book-title');
 const authorInput = document.querySelector('#book-author');
 const pagesInput = document.querySelector('#book-pages');
-const statusInput = document.querySelector('#book-status');
+const statusCheckBox = document.querySelector('#book-status');
 
-// Storage
-const library = [];
-
-// Book object constructor
-function Book(title, author, pages, status) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.isRead = status;
-}
+// modals
 
 const showModalButton = document.querySelector('.input-book');
-showModalButton.addEventListener('click', () => {
-  addBookModal.showModal();
-});
+showModalButton.addEventListener('click', showModal);
+
+const exitModalButton = document.querySelector('.exit-modal');
+exitModalButton.addEventListener('click', closeModal);
+
+function showModal() {
+  addBookModal.show();
+}
+
+function closeModal() {
+  addBookModal.close();
+  form.reset();
+}
 
 const addBookButton = document.querySelector('.add-book');
 addBookButton.addEventListener('click', (e) => {
   const title = titleInput.value;
   const author = authorInput.value;
   const pages = pagesInput.value;
-  const status = statusInput.checked;
+  const status = statusCheckBox.checked;
 
   // check if form is valid
   if (form.checkValidity()) {
     e.preventDefault();
 
-    addBookToLibrary(title, author, pages, status);
-    addBookModal.close();
-    displayBook();
-    // reset form values
-    form.reset();
+    const book = new Book(title, author, pages, status);
+
+    library.addBook(book);
+    closeModal();
+    library.displayBook(book);
   }
 });
-
-function addBookToLibrary(title, author, pages, status) {
-  const book = new Book(title, author, pages, status);
-  library.push(book);
-}
-
-function displayBook() {
-  library.forEach((book) => {
-    if (!book.isDisplayed) {
-      createCard(book);
-
-      book.isDisplayed = true;
-    }
-  });
-}
 
 function createCard(book) {
   const card = document.createElement('div');
@@ -88,46 +134,89 @@ function createRemoveButton(book, card, className) {
   const removeButton = document.createElement('button');
   removeButton.classList.add(className);
   removeButton.textContent = 'Remove Book';
-  removeButton.addEventListener('click', () =>
-    removeBookFromLibrary(card, book),
-  );
+  removeButton.addEventListener('click', () => {
+    library.removeBook(book);
+    bookContainer.removeChild(card);
+  });
   return removeButton;
 }
 
 function createStatusButton(book, className) {
   const statusButton = document.createElement('button');
   statusButton.classList.add(className);
-  statusButton.textContent = book.isRead ? 'Read' : 'Unread';
+  statusButton.textContent = book.status ? 'Read' : 'Unread';
   setButtonBackgroundColor(book, statusButton);
   statusButton.addEventListener('click', () => {
-    changeBookStatus(book, statusButton);
+    library.changeBookStatus(book);
+    statusButton.textContent = book.status ? 'Read' : 'Unread';
     setButtonBackgroundColor(book, statusButton);
   });
   return statusButton;
 }
 
-function removeBookFromLibrary(card, book) {
-  const bookIndex = library.indexOf(book);
-  library.splice(bookIndex, 1);
-  bookContainer.removeChild(card);
-}
-
-function changeBookStatus(book, btn) {
-  library.forEach((arrBook) => {
-    if (arrBook === book) {
-      arrBook.isRead ? (arrBook.isRead = false) : (arrBook.isRead = true);
-      btn.textContent = arrBook.isRead ? 'Read' : 'Unread';
-    }
-  });
-}
-
 function setButtonBackgroundColor(book, btn) {
-  btn.style.backgroundColor = book.isRead ? '#7fd1ae' : '#f48966';
+  btn.style.backgroundColor = book.status ? '#7fd1ae' : '#f48966';
 }
 
-// modal quit button
-const exitModalButton = document.querySelector('.exit-modal');
-exitModalButton.addEventListener('click', () => {
-  addBookModal.close();
-  form.reset();
-});
+function saveToLocal() {
+  if (localStorage === null) {
+    showErrorMessage('This browser does not support local storage');
+    return;
+  }
+
+  try {
+    localStorage.setItem('books', JSON.stringify(library.books));
+  } catch (err) {
+    showErrorMessage('Error saving to local storage.');
+  }
+}
+
+function loadLocal() {
+  try {
+    const books = JSON.parse(localStorage.getItem('books'));
+
+    if (books) {
+      window.onload = () => {
+        books.forEach((book) => {
+          book.isDisplay = false;
+
+          library.addBook(book);
+          library.displayBook(book);
+        });
+      };
+    }
+  } catch (err) {
+    showErrorMessage('Error loading from local storage.');
+  }
+}
+
+function showErrorMessage(error) {
+  const errorContainer = document.createElement('div');
+  errorContainer.classList.add('error-msg');
+
+  const errorPara = document.createElement('p');
+  errorPara.textContent = error;
+  const errorCloseButton = document.createElement('button');
+  errorCloseButton.textContent = 'X';
+
+  errorCloseButton.addEventListener('click', () => {
+    document.body.removeChild(errorContainer);
+  });
+
+  errorContainer.append(errorPara, errorCloseButton);
+  document.body.appendChild(errorContainer);
+}
+
+const booksRead = document.querySelector('.books-read');
+const booksUnread = document.querySelector('.books-unread');
+const booksTotal = document.querySelector('.books-total');
+
+function displayBookLogs() {
+  const logs = library.getLogs();
+
+  booksRead.textContent = `Books Read: ${logs.booksRead}`;
+  booksUnread.textContent = `Books Unread: ${logs.booksUnread}`;
+  booksTotal.textContent = `Books Total: ${logs.totalBooks}`;
+}
+
+loadLocal();
