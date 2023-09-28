@@ -16,3 +16,4 @@ A project from The Odin Project.
 
 - Objects / Object Constructor
 - Intro to ES6 Classes
+- localStrorage, sessionStorage and cookies
