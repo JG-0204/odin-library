@@ -14,12 +14,16 @@ class Library {
 
   addBook(book) {
     this.books.push(book);
+
+    displayBookLogs();
     saveToLocal();
   }
 
   removeBook(book) {
     const bookIndex = this.books.indexOf(book);
     this.books.splice(bookIndex, 1);
+
+    displayBookLogs();
     saveToLocal();
   }
 
@@ -35,7 +39,18 @@ class Library {
 
   changeBookStatus(book) {
     book.status = book.status ? false : true;
+
+    displayBookLogs();
     saveToLocal();
+  }
+
+  getLogs() {
+    const logs = {
+      booksRead: this.books.filter((book) => book.status).length,
+      booksUnread: this.books.filter((book) => !book.status).length,
+      totalBooks: this.books.length,
+    };
+    return logs;
   }
 }
 
@@ -47,8 +62,6 @@ const bookContainer = document.querySelector('.cards-container');
 
 const addBookModal = document.querySelector('dialog');
 const form = document.querySelector('form');
-
-// inputs
 
 const titleInput = document.querySelector('#book-title');
 const authorInput = document.querySelector('#book-author');
@@ -192,6 +205,18 @@ function showErrorMessage(error) {
 
   errorContainer.append(errorPara, errorCloseButton);
   document.body.appendChild(errorContainer);
+}
+
+const booksRead = document.querySelector('.books-read');
+const booksUnread = document.querySelector('.books-unread');
+const booksTotal = document.querySelector('.books-total');
+
+function displayBookLogs() {
+  const logs = library.getLogs();
+
+  booksRead.textContent = `Books Read: ${logs.booksRead}`;
+  booksUnread.textContent = `Books Unread: ${logs.booksUnread}`;
+  booksTotal.textContent = `Books Total: ${logs.totalBooks}`;
 }
 
 loadLocal();
